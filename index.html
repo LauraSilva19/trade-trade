@@ -1,336 +1,314 @@
 <!DOCTYPE html>
-<html lang="pt-BR"><head><meta charset="utf-8">
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trade-Trade</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#070b16;--p:#0f1830;--l:#2a3a6a;--ink:#d8f3e4;--mute:#7f93b8;--ac:#ffd23f;--good:#00ff9c;--bad:#ff3860}
-*{box-sizing:border-box;image-rendering:pixelated}
-body{margin:0;background:var(--bg) linear-gradient(#ffffff08 1px,transparent 1px) 0 0/16px 16px;color:var(--ink);font:10px/1.8 "Press Start 2P",monospace}
-main{max-width:900px;margin:0 auto;padding:12px}h1,h2{margin:0;font-weight:400}h1{font-size:18px;color:var(--good);text-shadow:3px 3px 0 #000}h2{font-size:12px;color:var(--ac);margin-bottom:8px}
-.card{background:var(--p);border:4px solid var(--l);box-shadow:6px 6px 0 #000;padding:14px;margin-bottom:14px}
-input,select{font:inherit;padding:8px;border:3px solid var(--l);background:#000;color:var(--good);width:110px}
-button{font:inherit;cursor:pointer}
-.btn{background:var(--ac);color:#000;border:3px solid #000;box-shadow:0 4px 0 #000;padding:10px 12px}.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #000}.btn.g{background:var(--good)}.btn.alt{background:var(--p);color:var(--ink);border-color:var(--l)}.btn:disabled{opacity:.4}
-.chip{padding:4px 6px;border:2px solid var(--l);background:#000;color:var(--ink);font-size:8px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-.bank{background:#000;border:3px solid var(--good);color:var(--good);padding:8px 12px;font-size:14px}.bank small{display:block;font-size:7px;color:var(--mute)}
-.sm{font-size:8px;color:var(--mute)}.hide{display:none!important}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
-nav{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:6px}nav button{flex:none;padding:8px;border:3px solid var(--l);background:var(--p);color:var(--ink)}nav button[aria-selected=true]{background:var(--good);color:#000;border-color:#000}
-.msg{min-height:1.8em;margin:8px 0 0}.win{color:var(--good)}.lose{color:var(--bad)}
-#tk{background:#000;border-bottom:3px solid var(--good);overflow:hidden;white-space:nowrap;font-size:8px;padding:5px 0}#tk div{display:inline-block;padding-left:100%;animation:tk 45s linear infinite}@keyframes tk{to{transform:translateX(-100%)}}
-.status{text-align:center;color:var(--ac);margin-bottom:8px}
-.track{border:3px solid #000;background:#14391f}.lane{height:42px;position:relative;border-bottom:3px dashed #ffffff30}.lane:nth-child(odd){background:#1a4a28}
-.run{position:absolute;top:6px;display:flex;align-items:center;gap:4px;white-space:nowrap}.lb{font-size:8px;background:#000c;padding:3px 5px;border:2px solid currentColor}
-.fin{position:absolute;right:0;top:0;bottom:0;width:10px;background:repeating-linear-gradient(#fff 0 5px,#000 5px 10px)}
-.hs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:12px 0}.hs button{padding:8px;border:3px solid var(--l);background:#000;color:var(--ink);text-align:left;font-size:8px}.hs button[aria-pressed=true]{border-color:var(--ac)}.hs small{display:block;color:var(--mute);font-size:7px}
-.evt{min-height:2em;text-align:center;color:var(--bad);font-size:9px}
-.goal{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,56px);gap:6px;max-width:360px;margin:10px auto;padding:10px;border:4px solid #fff;background:#14391f}.goal button{background:#000;color:var(--ink);border:3px solid var(--l);font-size:8px}.goal button:disabled{opacity:.4}.goal button.on{border-color:var(--ac);color:var(--ac)}
-.big{font-size:26px;text-align:center;margin:4px 0}.reels{display:flex;gap:10px;justify-content:center;margin:10px}.reel{width:70px;height:80px;border:4px solid var(--l);background:#000;display:grid;place-items:center;font-size:36px}
-.gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}.ch{border:3px solid var(--l);padding:8px;background:#000;font-size:8px}.ch.no{opacity:.35}.ch img,.rv img{width:64px;height:64px;object-fit:cover;border:3px solid #000;display:block;margin-bottom:6px}
-.rv{text-align:center;padding:14px;border:4px solid;margin-top:10px;animation:pop .5s steps(5)}.rv img{margin:0 auto 8px;width:96px;height:96px}@keyframes pop{0%{transform:scale(.2)}100%{transform:scale(1)}}
-ol{padding:0;list-style:none;margin:0}li.rk{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:8px;border-bottom:2px solid var(--l)}li.me{background:#00ff9c22}
-#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ac);color:#000;border:3px solid #000;padding:10px;max-width:90%;z-index:90}
-#ann{position:fixed;top:10px;right:10px;z-index:150;display:flex;flex-direction:column;gap:8px;width:min(340px,92vw)}.an{background:var(--p);border:4px solid var(--ac);box-shadow:6px 6px 0 #000;padding:10px;animation:sl .35s steps(6)}.an b{color:var(--ac)}@keyframes sl{from{transform:translateX(120%)}}
-#lock{position:fixed;inset:0;background:#000e;z-index:200;display:grid;place-items:center;text-align:center;padding:20px}#lock div{border:4px solid var(--bad);background:var(--p);padding:24px;max-width:480px;box-shadow:8px 8px 0 #000}#lock h1{color:var(--bad);margin-bottom:12px}
-</style></head><body>
-<div id="tk"><div id="tki"></div></div>
-<div id="lock" class="hide"><div><h1>📚 HORÁRIO DE AULA</h1><p>O Trade-Trade está fechado agora.<br>Foco na aula! Volte depois.</p><p class="sm" id="lockT"></p></div></div>
-<div id="ann"></div>
+:root {
+  --bg: #0d1117; --p: #161b22; --l: #30363d; --ink: #c9d1d9; 
+  --ac: #58a6ff; --good: #2ea043; --bad: #f85149; --tr: #238636; --tr2: #2ea043;
+}
+{ box-sizing: border-box; }
+body { 
+  margin: 0; background: var(--bg); color: var(--ink); 
+  font: 400 20px/1.2 'VT323', monospace; /* Estilo Pixelado */
+  text-transform: uppercase;
+}
+main { max-width: 860px; margin: 0 auto; padding: 14px; }
+h1, h2 { margin: 0; color: var(--ac); text-shadow: 2px 2px 0 #000; }
+.card { background: var(--p); border: 2px solid var(--l); border-radius: 8px; padding: 16px; margin-bottom: 12px; box-shadow: 4px 4px 0 var(--bg); }
+input, select { font: inherit; padding: 8px; border: 2px solid var(--l); background: #000; color: var(--good); width: 120px; }
+button { font: inherit; cursor: pointer; border: 2px solid var(--l); background: var(--p); color: var(--ink); box-shadow: 2px 2px 0 var(--bg); padding: 8px 16px; transition: 0.1s; }
+button:active { box-shadow: 0 0 0 var(--bg); transform: translate(2px, 2px); }
+.btn { background: var(--ac); color: #000; font-weight: bold; border-color: #000; }
+.btn.g { background: var(--good); }
+.top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.bank { color: var(--good); font-size: 1.8rem; text-shadow: 1px 1px 0 #000; }
+.sm { font-size: 1rem; color: #8b949e; }
+.hide { display: none !important; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+nav { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; border-bottom: 2px dashed var(--l); }
+nav button[aria-selected=true] { background: var(--ink); color: var(--bg); }
+.msg { color: #f2cc60; } .win { color: var(--good); } .lose { color: var(--bad); }
+.track { background: #1a1a1a; border: 2px solid var(--l); overflow: hidden; position: relative; }
+.lane { height: 42px; position: relative; border-bottom: 2px dashed #333; }
+.lane:nth-child(odd) { background: #222; }
+.lane .nm { position: absolute; left: 100%; top: -10px; font-size: 0.9rem; color: #fff; white-space: nowrap; z-index: 2; margin-left: 10px; background: rgba(0,0,0,0.5); padding: 2px 4px; border-radius: 4px;}
+.run { position: absolute; top: 4px; left: 40px; font-size: 28px; line-height: 34px; transform: scaleX(-1); display: flex; align-items: center; }
+.run span.h-icon { filter: hue-rotate(45deg); }
+.hs { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 12px 0; }
+.hs button[aria-pressed=true] { border-color: var(--ac); background: #000; }
+
+
+/* Notificações Aprimoradas */
+#alerts { position: fixed; top: 10px; right: 10px; z-index: 100; display: flex; flex-direction: column; gap: 10px; }
+.alert-box { background: var(--p); border: 2px solid var(--ac); padding: 15px; box-shadow: 4px 4px 0 #000; animation: slideIn 0.3s; }
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+
+/* Tela de Bloqueio Admin */
+#blockScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--bad); text-align: center; }
+#blockScreen h1 { font-size: 4rem; color: var(--bad); margin-bottom: 20px; }
+
+
+/* Arena Penaltis */
+.goal { width: 300px; height: 150px; border: 4px solid #fff; border-bottom: 0; margin: 20px auto; position: relative; background: #1a3c24; display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; padding: 4px; }
+.tgt { border: 2px dashed rgba(255,255,255,0.3); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;}
+.tgt:hover { background: rgba(255,255,255,0.2); }
+</style>
+</head>
+<body>
+
+
+<div id="blockScreen" class="hide">
+  <h1>AULA ROLANDO!</h1>
+  <p>O Administrador bloqueou o jogo no momento. Preste atenção na aula!</p>
+</div>
+
+
+<div id="alerts"></div>
+
+
 <main>
-<div id="fbanner" class="card hide" style="border-color:var(--bad);color:var(--bad)"></div>
-<section id="auth" class="card hide" style="max-width:400px;margin:8vh auto">
- <h1>TRADE-TRADE</h1><p class="sm">📈 Só moedas de mentira. Entre com sua conta Google.</p>
- <div class="row"><button class="btn" id="login">ENTRAR COM GOOGLE</button></div><div id="aerr" class="sm lose"></div>
+<section id="auth" class="card hide" style="max-width:380px;margin:8vh auto; text-align: center;">
+ <h1>TRADE-TRADE</h1><p class="sm">Mercado de Ações e Apostas Pixeladas</p>
+ <button class="btn" id="loginGoogle">Entrar com Google</button>
+ <div id="aerr" class="sm" style="color:var(--bad)"></div>
 </section>
 
+
 <div id="app" class="hide">
- <div class="top"><div><h1>TRADE-TRADE</h1><div class="sm"><span id="who"></span> · <span id="inc"></span></div></div>
-  <div class="bank"><small>SALDO <span id="zero"></span></small><span id="coins">0</span> 🪙</div></div>
- <div id="admbar" class="sm lose hide">⚠️ Tela de bloqueio ativa (você, admin, continua jogando)</div>
- <nav id="nav"></nav>
+ <div class="top">
+  <div><h1>TRADE-TRADE</h1><div class="sm"><span id="who"></span> | Rendimento: <span id="inc">0</span>/min</div></div>
+  <div class="bank"><span id="coins">0</span> 💰</div>
+ </div>
+ 
+ <!-- Admin Panel (Aparece só para o admin) -->
+ <div id="adminPanel" class="card hide" style="border-color: var(--bad);">
+   <h2>Painel do Chefe</h2>
+   <button id="toggleBlock" class="btn" style="background:var(--bad)">Bloquear Jogo (Aula)</button>
+ </div>
+
+
+ <nav>
+  <button data-t="race" aria-selected="true">Corrida de Ativos</button>
+  <button data-t="penaltis" aria-selected="false">X1 Pênaltis</button>
+  <button data-t="shop" aria-selected="false">Loja (Amigos)</button>
+  <button data-t="send" aria-selected="false">Transferir</button>
+  <button id="out" class="alt">Deslogar</button>
+ </nav>
+
 
  <section id="race" class="card">
-  <div class="status" id="st"></div><div class="track" id="track"></div><div class="evt" id="evt"></div><div class="hs" id="hs"></div>
-  <div class="row"><input id="bet" type="number" min="1" value="50"><button class="btn" id="betgo">APOSTAR</button><span class="sm" id="pot"></span></div>
-  <p class="sm" id="last"></p>
-  <p class="sm">Corrida a cada 2 min. Apostas fecham aos 90s. Quem acertar leva 200 + a aposta + parte dos perdedores. Cada cavalo tem um poder e a corrida pode virar a qualquer momento!</p>
+  <div id="st" style="font-size: 1.2rem; color: var(--ac); margin-bottom: 10px;"></div>
+  <div class="track" id="track"></div>
+  <div class="hs" id="hs"></div>
+  <div class="row">
+    <input id="bet" type="number" min="1" value="50">
+    <button class="btn" id="betgo">Investir</button>
+    <span class="sm" id="pot"></span>
+  </div>
+  <p class="sm">As corridas agora têm reviravoltas frenéticas! O nome do ativo aparece na frente dele.</p>
  </section>
 
- <section id="x1" class="card hide"><h2>⚔️ X1 DE PÊNALTIS</h2>
-  <p class="sm">Escolha um jogador no Ranking (botão ⚔️). Vence quem fizer mais gols. Você leva sua aposta + a dele + um bônus de 1,25x (ou 1,5x se ganhar por 3+ gols de diferença) da aposta dele.</p>
-  <div class="row">Contra: <b id="xtN">—</b><input id="xtB" type="number" min="1" value="50"><button class="btn" id="xtGo">DESAFIAR</button></div><p class="msg" id="xtM"></p>
-  <div id="xInv"></div><div id="xDuel"></div>
+
+ <section id="penaltis" class="card hide">
+   <h2>X1 de Pênaltis</h2>
+   <p class="sm">Desafie alguém online. Ganhe o que apostou + o do oponente + bônus de 1.25x/1.5x do banco!</p>
+   <div class="row">
+     <input id="p1-op" placeholder="Nick do Adversário">
+     <input id="p1-bet" type="number" placeholder="Valor">
+     <button id="p1-invite" class="btn g">Desafiar</button>
+   </div>
+   <div id="arena" class="hide">
+     <h3 id="p1-status" class="msg">Sua Vez de Chutar!</h3>
+     <div class="goal" id="goal-grid">
+       <div class="tgt" data-pos="0">E-SUP</div>
+       <div class="tgt" data-pos="1">C-SUP</div>
+       <div class="tgt" data-pos="2">D-SUP</div>
+       <div class="tgt" data-pos="3">E-INF</div>
+       <div class="tgt" data-pos="4">C-INF</div>
+       <div class="tgt" data-pos="5">D-INF</div>
+     </div>
+   </div>
  </section>
 
- <section id="slot" class="card hide">
-  <div class="reels"><div class="reel">🍒</div><div class="reel">🍋</div><div class="reel">🔔</div></div>
-  <div class="row" style="justify-content:center"><input id="sB" type="number" min="1" value="50"><button class="btn" id="sGo">GIRAR</button></div>
-  <p class="msg" style="text-align:center" id="sMsg">3 iguais pagam de 6x a 300x. 2 cerejas pagam 1,5x.</p>
+
+ <section id="shop" class="card hide">
+  <h2>Mercado de Amigos</h2>
+  <p class="sm">Compre ações dos seus amigos para gerar renda passiva.</p>
+  <div class="row"><button class="btn" id="buy">Contratar Amigo · 100 💰</button></div>
+  <div class="gr" id="col" style="display:flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;"></div>
  </section>
 
- <section id="dice" class="card hide">
-  <div class="big" id="dn">--</div>
-  <div class="row"><label>Alvo <input id="dT" type="range" min="5" max="95" value="50" style="width:150px"> <b id="dTv">50</b></label><input id="dB" type="number" min="1" value="50"></div>
-  <div class="row"><button class="btn" id="dLo">ABAIXO</button><button class="btn" id="dHi">ACIMA</button><span class="sm" id="dInfo"></span></div>
-  <p class="msg" id="dMsg">Sorteio de 0 a 100. Quanto mais arriscado, mais paga.</p>
- </section>
 
- <section id="pix" class="card hide"><h2>💸 PIX</h2><p class="sm">Escolha o jogador no Ranking (botão 💸).</p>
-  <div class="row">Para: <b id="pxN">—</b><input id="pxA" type="number" min="1" value="50"><button class="btn g" id="pxGo">ENVIAR</button></div><p class="msg" id="pxM"></p></section>
+</div>
+</main>
 
- <section id="shop" class="card hide"><h2>🤝 LOJA DOS AMIGOS</h2>
-  <p class="sm">Abra caixas para conseguir amigos. Só o amigo em uso rende moedas por minuto (até 30 min acumulam offline).</p>
-  <div class="row"><button class="btn" id="buy">ABRIR CAIXA · 75 🪙</button></div><div id="rev"></div>
-  <h2 style="margin:16px 0 8px">COLEÇÃO</h2><div class="gr" id="col"></div></section>
-
- <section id="rank" class="card hide"><h2>🏆 RANKING</h2><ol id="rl"></ol></section>
-
- <section id="adm" class="card hide"><h2>🛠️ ADMIN · TELA DE AULA</h2>
-  <p class="sm" id="admS"></p>
-  <div class="row"><button class="btn" id="lkOn">BLOQUEAR AGORA</button><button class="btn g" id="lkOff">LIBERAR</button></div>
-  <div class="row"><label class="sm">Início <input id="lkA" type="datetime-local" style="width:210px"></label><label class="sm">Fim <input id="lkB" type="datetime-local" style="width:210px"></label><button class="btn" id="lkSave">AGENDAR</button></div>
- </section>
- <button class="btn alt" id="out">SAIR</button>
-</div><div id="toast" class="hide"></div></main>
 
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,signInWithPopup,signInWithCredential,GoogleAuthProvider,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {getFirestore,doc,setDoc,getDoc,getDocs,runTransaction,collection,query,where,orderBy,limit,onSnapshot,serverTimestamp,getDocFromServer} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, runTransaction, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ====== CONFIG ====== */
-// Seu e-mail de admin (pode colocar vários). Só quem está aqui vê a aba ADMIN.
-const ADMINS=["SEU_EMAIL@gmail.com"];
-// Bancos em ordem de prioridade. Quando a cota do 1º acaba, o jogo vai sozinho para o 2º.
-// (Se for gostar de testar: deixe o 2º com "COLE_AQUI" que ele é ignorado.)
-const CONFIGS=[
- {apiKey:"AIzaSyBofxeVjTeQduK4NSO8Ng-cd-WRDX5c7UY",authDomain:"horadabet-bfc43.firebaseapp.com",projectId:"horadabet-bfc43",storageBucket:"horadabet-bfc43.firebasestorage.app",messagingSenderId:"403306220946",appId:"1:403306220946:web:27d430dda96e4585e8854b"},
- {apiKey:"COLE_AQUI",authDomain:"COLE_AQUI",projectId:"COLE_AQUI",storageBucket:"COLE_AQUI",messagingSenderId:"COLE_AQUI",appId:"COLE_AQUI"}
-].filter(c=>!c.apiKey.startsWith("COLE"));
-// Amigos da loja: [id, nome, raridade, chance%, moedas/min]. A foto é  fotos/<id>.png
-const FRIENDS=[['amigo1','Amigo 1','Comum',30,1],['amigo2','Amigo 2','Comum',25,1],['amigo3','Amigo 3','Incomum',18,2],['amigo4','Amigo 4','Incomum',12,2],['amigo5','Amigo 5','Raro',10,5],['amigo6','Amigo 6','Épico',4,12],['amigo7','Amigo 7','Lendário',.9,30],['amigo8','Amigo 8','Mítico',.1,100]];
-/* ==================== */
 
-const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms)),rnd=Math.random;
-const A=CONFIGS.map((c,i)=>{const a=initializeApp(c,'t'+i);return{auth:getAuth(a),db:getFirestore(a)}});
-let db,auth,idx=0,uid=null,uref=null,me='',data=null,isAdm=false;
-const RT=120000,BET_END=90000,START=500,BOX=75,DT=.25;
-const COL=['#ff3860','#00ff9c','#3b9bff','#ffd23f','#c084fc','#ffffff'];
-const NAMES=['Pé de Pano','Vai Que Dá','Tá Pago','Zé do Pasto','Pangaré Premium','Sextou Veloz','Trovão Pastel','Dinheiro Sumiu','Café com Leite','Pix Errado','Boleto Vencido','Cavalo do Primo','Uber de Pasto','Meu Último Real','Tigrinho Zero','Chora Depois','Capim Turbo','Stop Loss','Bull Market','Bear Market','Day Trader','All In','Short Squeeze','HODL Hoof','Dividendo','Cripto Pônei','Alavancado','Mão de Alface'];
-const TR=[['Velocista','⚡ Larga voando, cansa no fim'],['Fechador','🔥 Larga lento, arrasa no final'],['Louco','🌀 Muda de ritmo toda hora'],['Azarão','🍀 Fraco, mas tem arrancada secreta'],['Maratona','🐢 Constante, não tropeça fácil']];
-const RC={Comum:'#9ca3af',Incomum:'#4ade80',Raro:'#60a5fa',Épico:'#c084fc',Lendário:'#fbbf24',Mítico:'#f43f5e'};
-const CHM=Object.fromEntries(FRIENDS.map(c=>[c[0],c]));
-const income=u=>{const c=CHM[u&&u.equipped];return c&&((u.chars||{})[c[0]]||0)>0?c[4]:0};
-const accrue=(u,now)=>Math.max(0,Math.floor(income(u)*Math.min(30,(now-(u.lastClaim||now))/60000)));
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const withTO=(p,ms)=>Promise.race([p,new Promise((_,j)=>setTimeout(()=>j(Error('timeout')),ms))]);
-function rng(s){let a=s>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+// BANCO DE DADOS 1
+const firebaseConfig1 = {
+  apiKey: "AIzaSyBofxeVjTeQduK4NSO8Ng-cd-WRDX5c7UY",
+  authDomain: "horadabet-bfc43.firebaseapp.com",
+  projectId: "horadabet-bfc43",
+  storageBucket: "horadabet-bfc43.firebasestorage.app",
+  messagingSenderId: "403306220946",
+  appId: "1:403306220946:web:27d430dda96e4585e8854b"
+};
+// BANCO DE DADOS 2 (Failover)
+const firebaseConfig2 = {
+  apiKey: "AIzaSyC0D4ErGImTz9hIGuI2WfN5Th7s7s1kqAc",
+  authDomain: "horadabet-a48b6.firebaseapp.com",
+  projectId: "horadabet-a48b6",
+  storageBucket: "horadabet-a48b6.firebasestorage.app",
+  messagingSenderId: "932771548782",
+  appId: "1:932771548782:web:29df4b76187980b3c9607f"
+};
 
-/* ---- relógio, avisos, toast ---- */
-let timeOffset=0,synced=false;const getNow=()=>Date.now()+timeOffset;
-async function syncTime(){try{const a=Date.now();await setDoc(uref,{ts:serverTimestamp()},{merge:true});const b=Date.now(),sv=(await getDocFromServer(uref)).data().ts.toMillis();timeOffset=sv-(a+b)/2}catch(e){}synced=true}
-let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.remove('hide');clearTimeout(tt);tt=setTimeout(()=>t.classList.add('hide'),3500)};
-const beep=()=>{try{const c=new(window.AudioContext||webkitAudioContext)(),o=c.createOscillator();o.type='square';o.frequency.value=880;o.connect(c.destination);o.start();o.stop(c.currentTime+.12)}catch(e){}};
-function ann(ic,t,x,btns=[],ms=8000){const d=document.createElement('div');d.className='an';d.innerHTML=`<b>${ic} ${t}</b><div class="sm">${x}</div>`;
- btns.forEach(([l,f])=>{const b=document.createElement('button');b.className='btn';b.textContent=l;b.style.margin='8px 6px 0 0';b.onclick=()=>{f();d.remove()};d.append(b)});$('#ann').append(d);beep();if(ms)setTimeout(()=>d.remove(),ms)}
-function fail(e,ctx){const m=String(e&&e.code||e&&e.message||e);
- if(/resource-exhausted/.test(m)&&idx<A.length-1){toast('Cota do banco acabou. Trocando para o próximo banco...');setTimeout(()=>location.reload(),1800);return 'trocando de banco'}
- console.error(ctx,e);let t=m;if(m.includes('permission-denied'))t='Firestore recusou o acesso (regras). Veja as regras no console do Firebase.';
- else if(m.includes('resource-exhausted'))t='A cota gratuita dos bancos acabou. Volta amanhã.';
- const b=$('#fbanner');b.textContent='⚠️ '+t+' ['+ctx+']';b.classList.remove('hide');return t}
-const say=(id,t,c)=>{$(id).textContent=t;$(id).className='msg '+(c||'')};
-const tx=fn=>runTransaction(db,async t=>fn(t,(await t.get(uref)).data()));
-async function take(id,msg){const a=Math.floor(+$(id).value);if(!(a>=1)){say(msg,'Aposta inválida.','lose');throw 0}
- try{await tx((t,u)=>{if(u.coins<a)throw Error('Saldo insuficiente.');t.update(uref,{coins:u.coins-a})})}catch(e){say(msg,e.message,'lose');throw 0}return a}
-const give=g=>g>0?tx((t,u)=>t.update(uref,{coins:u.coins+g})):0;
 
-/* ---- ticker de "bolsa" ---- */
-$('#tki').innerHTML=['TIGR','HODL','PIXX','BULL','BEAR','CAVL','AMGO','ALLN','STOP'].map(s=>{const p=(rnd()*9-4).toFixed(1);return`${s} <span class="${p>=0?'win':'lose'}">${p>=0?'▲':'▼'}${Math.abs(p)}%</span>`}).join(' &nbsp;·&nbsp; ');
+// URL BASE DO GITHUB PARA AS FOTOS
+const GITHUB_URL = "https://laurasilva19.github.io/trade-trade/";
+const AMIGOS = [
+  { id: 'amigo1', nome: 'João Investidor', img: 'amigo1.png', rendimento: 5 },
+  { id: 'amigo2', nome: 'Maria do Pix', img: 'amigo2.png', rendimento: 10 },
+  { id: 'amigo3', nome: 'Carlos Trader', img: 'amigo3.png', rendimento: 25 }
+];
 
-/* ---- login (múltiplos bancos) ---- */
-const prov=new GoogleAuthProvider();
-$('#login').onclick=async()=>{$('#aerr').textContent='';try{const r=await signInWithPopup(A[0].auth,prov),cr=GoogleAuthProvider.credentialFromResult(r);for(const x of A.slice(1))await signInWithCredential(x.auth,cr).catch(()=>{})}catch(e){$('#aerr').textContent='Erro: '+e.message}};
-$('#out').onclick=()=>signOut(A[0].auth).then(()=>Promise.all(A.slice(1).map(x=>signOut(x.auth))));
-let unsubs=[];
-onAuthStateChanged(A[0].auth,async u=>{
- if(!u){uid=null;data=null;unsubs.forEach(f=>f());unsubs=[];synced=false;$('#app').classList.add('hide');$('#auth').classList.remove('hide');return}
- me=u.email||'';isAdm=ADMINS.includes(me);
- // escolhe o primeiro banco que ainda aceita escrita (cota ok)
- idx=-1;for(let i=0;i<A.length&&idx<0;i++){const cu=A[i].auth.currentUser;if(!cu)continue;
-  try{await withTO(setDoc(doc(A[i].db,'users',cu.uid),{seen:Date.now()},{merge:true}),7000);idx=i}catch(e){if(!/resource-exhausted/.test(String(e.code||e.message)))idx=i}}
- if(idx<0)idx=0;db=A[idx].db;auth=A[idx].auth;uid=auth.currentUser.uid;uref=doc(db,'users',uid);
- $('#auth').classList.add('hide');$('#app').classList.remove('hide');$('#nav button[data-t=adm]').classList.toggle('hide',!isAdm);
- try{const sn=await getDoc(uref),d0=sn.exists()?sn.data():{};
-  if(d0.coins===undefined){ // conta nova neste banco: tenta trazer os dados do banco anterior (ou do backup local)
-   let old=null;for(let j=idx-1;j>=0&&!old;j--){try{const cu=A[j].auth.currentUser;if(cu){const o=await getDoc(doc(A[j].db,'users',cu.uid));if(o.exists()&&o.data().coins!==undefined)old=o.data()}}catch(e){}}
-   if(!old)try{old=JSON.parse(localStorage.getItem('tt_'+me))}catch(e){}
-   await setDoc(uref,{nick:(old&&old.nick)||(u.displayName||me.split('@')[0]).replace(/[<>]/g,'').substring(0,16),coins:old?old.coins:START,chars:old?old.chars||{}:{},equipped:old?old.equipped||null:null,lastClaim:Date.now(),zeroAt:null},{merge:true});
-   if(old&&idx>0)toast('✅ Seus dados foram migrados para o novo banco!')}}catch(e){toast(fail(e,'conta'))}
- unsubs.push(onSnapshot(uref,s=>{if(!s.exists())return;data=s.data();$('#who').textContent=data.nick||'Jogador';$('#coins').textContent=(data.coins||0).toLocaleString('pt-BR');
-  try{localStorage.setItem('tt_'+me,JSON.stringify({nick:data.nick,coins:data.coins,chars:data.chars||{},equipped:data.equipped||null}))}catch(e){}
-  opening||renderCol()},e=>fail(e,'usuário')));
- subRank();subPix();subDuels();subLock();
- await Promise.race([syncTime(),sleep(8000)]);cur=Math.floor(getNow()/RT);subBets();try{await settlePending()}catch(e){fail(e,'pendentes')}
- setInterval(()=>uid&&syncTime(),300000)});
 
-/* ---- tela de aula (admin) ---- */
-let lk={manual:false,start:0,end:0};
-function subLock(){unsubs.push(onSnapshot(doc(db,'config','lock'),s=>{lk=s.exists()?s.data():{manual:false,start:0,end:0};chkLock();
- $('#admS').textContent=`Manual: ${lk.manual?'LIGADO':'desligado'} · Agendado: ${lk.end>lk.start?new Date(lk.start).toLocaleString('pt-BR')+' → '+new Date(lk.end).toLocaleString('pt-BR'):'nenhum'}`},()=>{}))}
-function chkLock(){const n=getNow(),on=!!(lk.manual||(lk.end>lk.start&&n>=lk.start&&n<lk.end));
- $('#lock').classList.toggle('hide',!(on&&!isAdm&&uid));$('#admbar').classList.toggle('hide',!(on&&isAdm));
- $('#lockT').textContent=!lk.manual&&on?`Volta em ${Math.ceil((lk.end-n)/60000)} min`:''}
-setInterval(chkLock,1000);
-const lkSet=o=>setDoc(doc(db,'config','lock'),{manual:false,start:0,end:0,...lk,...o}).then(()=>toast('Salvo!')).catch(e=>toast(fail(e,'admin')));
-$('#lkOn').onclick=()=>lkSet({manual:true});$('#lkOff').onclick=()=>lkSet({manual:false,start:0,end:0});
-$('#lkSave').onclick=()=>{const a=Date.parse($('#lkA').value),b=Date.parse($('#lkB').value);if(!(b>a))return toast('Datas inválidas.');lkSet({start:a,end:b})};
+let app, auth, db;
+try {
+  app = initializeApp(firebaseConfig1);
+  db = getFirestore(app);
+} catch(e) {
+  console.warn("Banco 1 falhou/cota excedida, iniciando Banco 2");
+  app = initializeApp(firebaseConfig2, "secundario");
+  db = getFirestore(app);
+}
+auth = getAuth(app);
 
-/* ---- corrida com reviravoltas ---- */
-function sim(r){const R=rng(r*7919+13),n=6,pool=NAMES.map((_,i)=>i),hs=[],ev=[];
- for(let i=0;i<n;i++){hs.push({name:NAMES[pool.splice(Math.floor(R()*pool.length),1)[0]],tr:Math.floor(R()*5),b:.062+R()*.012,ph:R()*6,pos:0,fin:0});
-  if(hs[i].tr==3)ev.push({t:7+R()*14,h:i,k:1,d:3.5,x:'ARRANCADA SECRETA 🍀'})}
- for(let k=0;k<7;k++){const h=Math.floor(R()*n),up=R()<.5;ev.push({t:4+R()*20,h,k:up?1:0,d:2+R()*2,x:up?'DISPAROU 🚀':'TROPEÇOU 💥'})}
- ev.sort((a,b)=>a.t-b.t);const P=[hs.map(()=>0)],ft=[];let T=0,fins=0;
- while(T<28&&fins<n){const avg=hs.reduce((a,h)=>a+h.pos,0)/n,f=T/22;
-  hs.forEach((h,i)=>{if(h.fin)return;let s=h.b;
-   if(h.tr==0)s*=1.3-.55*f;if(h.tr==1)s*=.78+.6*f;if(h.tr==2)s*=1+.4*Math.sin(T*1.1+h.ph);if(h.tr==3)s*=.94;
-   ev.forEach(e=>{if(e.h==i&&T>=e.t&&T<e.t+e.d)s*=e.k?2:(h.tr==4?.6:.25)});
-   s*=1+Math.max(0,avg-h.pos)*1.3;h.pos=Math.min(1,h.pos+s*DT);if(h.pos>=1){h.fin=1;fins++;ft.push(i)}});
-  T+=DT;P.push(hs.map(h=>h.pos))}
- const last=P[P.length-1],w=ft.length?ft[0]:last.indexOf(Math.max(...last));
- return{hs,P,w,ev:ev.map(e=>({t:e.t,d:e.d,txt:hs[e.h].name+' '+e.x})),T}}
-const memo={};const S=r=>memo[r]||(memo[r]=sim(r));
-const SP=['.........XX...','........XXXX..','.XXXXXXXXXEXX.','XXXXXXXXXXXXXX','XXXXXXXXXXXX..','XXXXXXXXXXXX..','.XXXXXXXXXX...','.X.X......X.X.','.X.X......X.X.'];
-const sprite=c=>`<svg viewBox="0 0 14 9" width="42" height="27" shape-rendering="crispEdges" style="transform:scaleX(1)">${SP.map((r,y)=>[...r].map((ch,x)=>ch=='.'?'':`<rect x="${x}" y="${y}" width="1" height="1" fill="${ch=='E'?'#000':c}"/>`).join('')).join('')}</svg>`;
-$('#track').innerHTML=COL.map((c,i)=>`<div class="lane"><div class="run" id="r${i}" style="color:${c}">${sprite(c)}<span class="lb" id="n${i}"></span></div><div class="fin"></div></div>`).join('');
-$('#hs').innerHTML=COL.map((c,i)=>`<button data-h="${i}" aria-pressed="${i==0}" style="color:${c}"><span id="hn${i}"></span><small id="ht${i}"></small><small id="hb${i}"></small></button>`).join('');
-let sel=0,cur=Math.floor(Date.now()/RT),shown=0,warned=0,roundBets=[],unsubBets=null;
-$('#hs').onclick=e=>{const b=e.target.closest('button');if(!b)return;sel=+b.dataset.h;[...$('#hs').children].forEach(x=>x.setAttribute('aria-pressed',x===b))};
-function setNames(r){S(r).hs.forEach((h,i)=>{$('#n'+i).textContent=h.name+' ▶';$('#hn'+i).textContent=h.name;$('#ht'+i).textContent=TR[h.tr][0]+' · '+TR[h.tr][1]});shown=r}
-function subBets(){unsubBets&&unsubBets();unsubBets=onSnapshot(query(collection(db,'bets'),where('round','==',cur)),s=>{roundBets=s.docs.map(d=>d.data());
- $('#pot').textContent=`Pote: ${roundBets.reduce((a,b)=>a+b.amount,0)} 🪙 · ${roundBets.length} aposta(s)`;
- COL.forEach((_,i)=>$('#hb'+i).textContent=roundBets.filter(b=>b.horse==i).map(b=>b.nick+' '+b.amount).join(', '))},e=>fail(e,'apostas'))}
-$('#betgo').onclick=async()=>{const amt=Math.floor(+$('#bet').value),r=cur;
- if(!synced)return toast('Sincronizando o relógio...');if(getNow()%RT>=BET_END)return toast('Apostas encerradas.');
- if(!(amt>=1)||amt>data.coins)return toast('Aposta inválida ou saldo insuficiente.');
- try{await runTransaction(db,async t=>{const br=doc(db,'bets',r+'_'+uid),b=await t.get(br),u=await t.get(uref);
-  if(b.exists())throw Error('Você já apostou nesta rodada.');if(u.data().coins<amt)throw Error('Saldo insuficiente.');
-  t.set(br,{round:r,uid,nick:u.data().nick||'Jogador',horse:sel,amount:amt,settled:false});t.update(uref,{coins:u.data().coins-amt})});
-  toast(`Apostou ${amt} em ${S(r).hs[sel].name}!`)}catch(e){toast(fail(e,'aposta'))}};
-async function settle(r){if(!uid)return;const br=doc(db,'bets',r+'_'+uid),s=await getDoc(br);if(!s.exists()||s.data().settled)return;
- const all=(await getDocs(query(collection(db,'bets'),where('round','==',r)))).docs.map(d=>d.data()),{w,hs}=S(r),
- win=all.filter(b=>b.horse==w),lose=all.filter(b=>b.horse!=w),mine=s.data(),
- pay=mine.horse==w?200+mine.amount+Math.floor(lose.reduce((a,b)=>a+b.amount,0)/win.length):0;
- await runTransaction(db,async t=>{const b=await t.get(br),u=await t.get(uref);if(b.data().settled)return;t.update(br,{settled:true,payout:pay});if(pay)t.update(uref,{coins:u.data().coins+pay})});
- ann(pay?'🏆':'📉',pay?'VOCÊ GANHOU!':'PERDEU...',`${esc(hs[w].name)} venceu. ${pay?'+'+pay+' moedas!':'Você perdeu '+mine.amount+'.'}`)}
-async function settlePending(){const s=await getDocs(query(collection(db,'bets'),where('uid','==',uid),where('settled','==',false)));for(const d of s.docs){const r=d.data().round;if(r<cur)await settle(r)}}
-function frame(){if(!uid||!synced){$('#st').textContent='Sincronizando relógio...';return requestAnimationFrame(frame)}
- const now=getNow(),r=Math.floor(now/RT),off=now%RT;
- if(r!==cur){const p=cur;cur=r;warned=0;settle(p).catch(e=>fail(e,'resultado'));subBets()}
- if(shown!==r)setNames(r);
- if(!warned&&off>=BET_END-20000&&off<BET_END-14000){warned=1;ann('🏇','CORRIDA EM 20s!','As apostas fecham em 20 segundos. Corre!',[['APOSTAR',()=>showTab('race')]],9000)}
- const s=S(r),t=Math.max(0,(off-BET_END)/1000),pw=S(r-1);$('#last').textContent='Última vencedora: '+pw.hs[pw.w].name;
- $('#st').textContent=off<BET_END?`Apostas abertas · largada em ${Math.ceil((BET_END-off)/1000)}s`:t<s.T?'🏁 CORRIDA ROLANDO!':`${s.hs[s.w].name} venceu! Próxima em ${Math.ceil((RT-off)/1000)}s`;
- const k=Math.min(t/DT,s.P.length-1),i0=Math.floor(k),f=k-i0,a=s.P[i0],b=s.P[Math.min(i0+1,s.P.length-1)],ps=a.map((v,i)=>v+(b[i]-v)*f),lead=ps.indexOf(Math.max(...ps));
- ps.forEach((p,i)=>{const e=$('#r'+i),run=t>0&&p<1;e.style.left=`calc((100% - 200px) * ${p} + 4px)`;e.style.transform=`translateY(${run?-Math.abs(Math.sin(now/90+i))*4:0}px)`;e.style.filter=run&&i==lead&&t>1.5?'drop-shadow(0 0 6px #ffd23f)':'none'});
- const ev=s.ev.filter(e=>t>0&&t>=e.t&&t<e.t+4).pop();$('#evt').textContent=ev?'⚠️ '+ev.txt:'';
- requestAnimationFrame(frame)}
-requestAnimationFrame(frame);
 
-/* ---- renda passiva e recarga ---- */
-let busy=false;
-setInterval(async()=>{if(!uid||!data||busy)return;const now=getNow();busy=true;
- try{if(now-(data.lastClaim||now)>=120000&&accrue(data,now)>=1)await tx((t,u)=>{const x=accrue(u,now);if(x>=1)t.update(uref,{coins:u.coins+x,lastClaim:now})});
-  if(data.coins<=0){if(!data.zeroAt)await setDoc(uref,{zeroAt:now},{merge:true});
-   else if(now-data.zeroAt>=180000){const g=50+Math.floor(rnd()*51);await tx((t,u)=>{if(u.coins<=0)t.update(uref,{coins:g,zeroAt:null})});toast(`Você ganhou ${g} moedas para voltar!`)}}
-  else if(data.zeroAt)await setDoc(uref,{zeroAt:null},{merge:true})}catch(e){}busy=false},5000);
-setInterval(()=>{$('#zero').textContent=data&&data.coins<=0&&data.zeroAt?`· extras em ${Math.max(0,Math.ceil((180000-(getNow()-data.zeroAt))/1000))}s`:''},1000);
+const $ = s => document.querySelector(s);
+let uid = null, uref = null, data = null;
+const ADMIN_UID = "COLE_AQUI_O_UID_DO_ADMIN"; // Substitua pelo seu UID
 
-/* ---- slots e dados ---- */
-const SY=[['🍒',.3,6],['🍋',.25,10],['🔔',.2,20],['⭐',.13,40],['💎',.08,100],['7️⃣',.04,300]],reels=[...document.querySelectorAll('.reel')];
-const pickS=()=>{let r=rnd();for(const s of SY){r-=s[1];if(r<=0)return s}return SY[0]};let sBusy=0;
-$('#sGo').onclick=async()=>{if(sBusy)return;let a;try{a=await take('#sB','#sMsg')}catch(e){return}
- sBusy=1;$('#sGo').disabled=true;say('#sMsg','Girando...');const res=[pickS(),pickS(),pickS()],iv=reels.map(r=>setInterval(()=>r.textContent=SY[Math.floor(rnd()*6)][0],70));
- reels.forEach((r,i)=>setTimeout(()=>{clearInterval(iv[i]);r.textContent=res[i][0]},900+i*600));
- setTimeout(async()=>{let m=0;const e=res.map(s=>s[0]);if(e[0]==e[1]&&e[1]==e[2])m=res[0][2];else if(e.filter(x=>x=='🍒').length==2)m=1.5;
-  const g=Math.floor(a*m);await give(g);say('#sMsg',m?`Ganhou ${g} moedas (${m}x)!`:`Nada. Perdeu ${a}.`,m?'win':'lose');sBusy=0;$('#sGo').disabled=false},900+3*600)};
-const dT=$('#dT'),dInfo=()=>{const t=+dT.value;$('#dTv').textContent=t;$('#dInfo').textContent=`Abaixo ${t}% (${(97/t).toFixed(2)}x) · Acima ${100-t}% (${(97/(100-t)).toFixed(2)}x)`};dT.oninput=dInfo;dInfo();
-async function roll(low){let a;try{a=await take('#dB','#dMsg')}catch(e){return}const t=+dT.value,r=Math.floor(rnd()*10000)/100,ok=low?r<t:r>t,m=97/(low?t:100-t);
- $('#dLo').disabled=$('#dHi').disabled=true;let k=0;const iv=setInterval(()=>{$('#dn').textContent=(rnd()*100).toFixed(2);if(++k>12){clearInterval(iv);$('#dn').textContent=r.toFixed(2);$('#dn').style.color=ok?'var(--good)':'var(--bad)';
-  const g=ok?Math.floor(a*m):0;give(g);say('#dMsg',ok?`Deu ${r.toFixed(2)}! Ganhou ${g}.`:`Deu ${r.toFixed(2)}. Perdeu ${a}.`,ok?'win':'lose');$('#dLo').disabled=$('#dHi').disabled=false}},60)}
-$('#dLo').onclick=()=>roll(1);$('#dHi').onclick=()=>roll(0);
 
-/* ---- loja dos amigos ---- */
-let opening=0;const img=id=>`<img src="fotos/${id}.png" alt="" onerror="this.style.opacity=.2">`;
-$('#buy').onclick=async()=>{if(opening)return;if(data.coins<BOX)return toast('Moedas insuficientes.');let r=rnd()*100,c=FRIENDS[0];for(const x of FRIENDS){r-=x[3];if(r<=0){c=x;break}}const now=getNow();
- opening=1;$('#buy').disabled=true;
- try{await tx((t,u)=>{if(u.coins<BOX)throw Error('Moedas insuficientes.');const ch={...(u.chars||{})};ch[c[0]]=(ch[c[0]]||0)+1;t.update(uref,{coins:u.coins-BOX+accrue(u,now),chars:ch,lastClaim:now,...(u.equipped?{}:{equipped:c[0]})})})}catch(e){opening=0;$('#buy').disabled=false;return toast(e.message)}
- $('#rev').innerHTML='<div class="rv" style="border-color:#fff;font-size:48px;text-align:center">🎁</div>';await sleep(1500);
- const col=RC[c[2]];$('#rev').innerHTML=`<div class="rv" style="border-color:${col};box-shadow:0 0 24px ${col}">${img(c[0])}<b style="color:${col}">${c[2]}</b><div>${esc(c[1])}</div><div class="sm">+${c[4]} moedas/min</div><button class="btn" id="useNew" style="margin-top:8px">USAR ESTE</button></div>`;
- $('#useNew').onclick=()=>equip(c[0]);opening=0;$('#buy').disabled=false;renderCol()};
-function renderCol(){if(!data)return;const eq=data.equipped,ec=CHM[eq],has=ec&&((data.chars||{})[eq]||0)>0;
- $('#inc').textContent=has?`${ec[1]} · +${ec[4]}/min`:'nenhum amigo em uso';
- $('#col').innerHTML=FRIENDS.map(c=>{const n=(data.chars||{})[c[0]]||0,on=has&&eq===c[0];return`<div class="ch ${n?'':'no'}" style="border-color:${on?'var(--good)':n?RC[c[2]]:'var(--l)'}">${img(c[0])}<b>${esc(c[1])}</b><div style="color:${RC[c[2]]}">${c[2]}</div><div class="sm">+${c[4]}/min · x${n}</div>${n?`<button class="btn ${on?'g':'alt'}" style="margin-top:6px;width:100%" data-use="${c[0]}">${on?'EM USO':'USAR'}</button>`:''}</div>`}).join('')}
-$('#col').onclick=e=>{const b=e.target.closest('[data-use]');if(b)equip(b.dataset.use)};
-async function equip(id){try{await tx((t,u)=>{if(!((u.chars||{})[id]>0))throw Error('Você não tem esse amigo.');if(u.equipped===id)return;const now=getNow();t.update(uref,{coins:u.coins+accrue(u,now),lastClaim:now,equipped:id})});toast(CHM[id][1]+' agora está em uso!')}catch(e){toast(fail(e,'equipar'))}}
+// Lógica de Abas
+document.querySelectorAll('nav button[data-t]').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('nav button[data-t]').forEach(x => x.setAttribute('aria-selected', false));
+    b.setAttribute('aria-selected', true);
+    document.querySelectorAll('section.card').forEach(s => s.classList.add('hide'));
+    if(b.dataset.t) $('#' + b.dataset.t).classList.remove('hide');
+  }
+});
 
-/* ---- ranking ---- */
-let xT=null,pT=null;
-function subRank(){unsubs.push(onSnapshot(query(collection(db,'users'),orderBy('coins','desc'),limit(20)),s=>{$('#rl').innerHTML=s.docs.map((d,i)=>{const u=d.data();return`<li class="rk ${d.id==uid?'me':''}"><span>${i+1}. ${esc(u.nick||'Jogador')}</span><span>${d.id==uid?'':`<button class="chip" data-p="pix" data-uid="${d.id}" data-nick="${esc(u.nick||'Jogador')}">💸</button> <button class="chip" data-p="x1" data-uid="${d.id}" data-nick="${esc(u.nick||'Jogador')}">⚔️</button> `}<b>${(u.coins||0).toLocaleString('pt-BR')} 🪙</b></span></li>`}).join('')},e=>fail(e,'ranking')))}
-$('#rl').onclick=e=>{const b=e.target.closest('button[data-uid]');if(!b)return;const o={uid:b.dataset.uid,nick:b.dataset.nick};
- if(b.dataset.p=='pix'){pT=o;$('#pxN').textContent=o.nick;showTab('pix')}else{xT=o;$('#xtN').textContent=o.nick;showTab('x1')}};
 
-/* ---- pix ---- */
-$('#pxGo').onclick=async()=>{const a=Math.floor(+$('#pxA').value);if(!pT)return say('#pxM','Escolha alguém no Ranking.','lose');if(!(a>=1))return say('#pxM','Valor inválido.','lose');
- try{await runTransaction(db,async t=>{const u=await t.get(uref),r=await t.get(doc(db,'users',pT.uid));if(!r.exists())throw Error('Jogador não existe.');if(u.data().coins<a)throw Error('Saldo insuficiente.');
-  t.update(uref,{coins:u.data().coins-a});t.set(doc(collection(db,'pix')),{from:uid,fromNick:u.data().nick||'Jogador',to:pT.uid,toNick:pT.nick,amount:a,claimed:false,at:serverTimestamp()})});
-  say('#pxM',`Pix de ${a} 🪙 enviado para ${pT.nick}!`,'win')}catch(e){say('#pxM',fail(e,'pix'),'lose')}};
-const claiming=new Set();
-function subPix(){unsubs.push(onSnapshot(query(collection(db,'pix'),where('to','==',uid)),s=>s.docs.map(d=>({id:d.id,...d.data()})).filter(p=>!p.claimed).forEach(claimPix),e=>fail(e,'pix')))}
-async function claimPix(p){if(claiming.has(p.id))return;claiming.add(p.id);
- try{const pr=doc(db,'pix',p.id);let got=0;await runTransaction(db,async t=>{got=0;const x=await t.get(pr),u=await t.get(uref);if(!x.exists()||x.data().claimed||x.data().to!==uid)return;got=x.data().amount;t.update(pr,{claimed:true});t.update(uref,{coins:u.data().coins+got})});
-  if(got)ann('💸','PIX RECEBIDO!',`<b>${esc(p.fromNick)}</b> te mandou <b>${got.toLocaleString('pt-BR')} 🪙</b>`,[],10000)}catch(e){fail(e,'receber pix')}claiming.delete(p.id)}
+// Autenticação
+$('#loginGoogle').onclick = async () => { try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e) { $('#aerr').textContent = e.message; } };
+$('#out').onclick = () => signOut(auth);
 
-/* ---- X1 de pênaltis ---- */
-let duels=[],seen={},annd=new Set(),firstD=true;const DIRS=['↖ SUP.ESQ','SUP.DIR ↗','● CENTRO','↙ INF.ESQ','INF.DIR ↘'],POS=['1/1','1/3','2/2','3/1','3/3'];
-$('#xtGo').onclick=async()=>{const a=Math.floor(+$('#xtB').value);if(!xT)return say('#xtM','Escolha um jogador no Ranking (⚔️).','lose');if(!(a>=1))return say('#xtM','Aposta inválida.','lose');
- try{await runTransaction(db,async t=>{const u=await t.get(uref);if(u.data().coins<a)throw Error('Saldo insuficiente.');t.update(uref,{coins:u.data().coins-a});
-  t.set(doc(collection(db,'duels')),{players:[uid,xT.uid],a:uid,b:xT.uid,aNick:u.data().nick||'Jogador',bNick:xT.nick,aBet:a,bBet:0,status:'invite',aS:0,bS:0,k:0,picks:{},log:[],at:serverTimestamp()})});
-  say('#xtM','Desafio enviado!','win')}catch(e){say('#xtM',fail(e,'x1'),'lose')}};
-function subDuels(){unsubs.push(onSnapshot(query(collection(db,'duels'),where('players','array-contains',uid)),s=>{duels=s.docs.map(d=>({id:d.id,...d.data()}));
- duels.forEach(d=>{const pv=seen[d.id];
-  if(d.status=='invite'&&d.b==uid&&!annd.has(d.id)){annd.add(d.id);ann('⚔️','DESAFIO X1!',`<b>${esc(d.aNick)}</b> te chamou pra um X1 valendo <b>${d.aBet} 🪙</b>`,[['VER',()=>showTab('x1')]],15000)}
-  if(pv&&pv!=d.status){if(d.status=='play'&&d.a==uid)ann('⚽','X1 ACEITO!',`${esc(d.bNick)} aceitou. Bola rolando!`,[['JOGAR',()=>showTab('x1')]]);
-   if(d.status=='closed'&&d.a==uid&&d.closedBy!=uid)ann('🚫','X1 RECUSADO',`${esc(d.bNick)} recusou. Sua aposta voltou.`);
-   if(d.status=='done')ann(d.winner==uid?'🏆':'😢',d.winner==uid?'VOCÊ GANHOU O X1!':'VOCÊ PERDEU O X1',`Placar ${d.aS} x ${d.bS}`+(d.winner==uid?` · +${d.payout} 🪙`:''),[],10000)}
-  seen[d.id]=d.status;if(d.payTo==uid&&!d.claimed&&d.payout)claimDuel(d.id)});renderDuels()},e=>fail(e,'x1')))}
-async function claimDuel(id){if(claiming.has(id))return;claiming.add(id);const dr=doc(db,'duels',id);
- try{await runTransaction(db,async t=>{const x=await t.get(dr),u=await t.get(uref);if(!x.exists()||x.data().claimed||x.data().payTo!==uid)return;t.update(dr,{claimed:true});t.update(uref,{coins:u.data().coins+x.data().payout})})}catch(e){fail(e,'x1 pagamento')}claiming.delete(id)}
-function renderDuels(){const inv=duels.filter(d=>d.status=='invite'),d=duels.find(x=>x.status=='play');
- $('#xInv').innerHTML=inv.map(d=>d.b==uid?`<div class="card">⚔️ <b>${esc(d.aNick)}</b> te desafiou! Aposta dele: ${d.aBet} 🪙<div class="row"><input type="number" min="1" value="${d.aBet}" id="ib_${d.id}"><button class="btn g" data-ac="${d.id}">ACEITAR</button><button class="btn alt" data-no="${d.id}">RECUSAR</button></div></div>`:`<div class="card">Aguardando <b>${esc(d.bNick)}</b> (${d.aBet} 🪙) <button class="btn alt" data-no="${d.id}">CANCELAR</button></div>`).join('');
- if(!d){$('#xDuel').innerHTML='';return}
- const sh=d.k%2?d.b:d.a,att=sh==uid,mine=d.picks&&d.picks[uid]!==undefined,ia=d.a==uid,my=ia?d.aS:d.bS,op=ia?d.bS:d.aS,on=ia?d.bNick:d.aNick;
- $('#xDuel').innerHTML=`<div class="card"><div class="big">${my} x ${op}</div><div class="status">VOCÊ vs ${esc(on)} · chute ${d.k+1}</div><div class="status" style="color:${att?'var(--good)':'var(--bad)'}">${att?'🦵 VOCÊ CHUTA! Escolha o canto':'🧤 VOCÊ DEFENDE! Escolha o canto'}</div>
- <div class="goal">${DIRS.map((l,i)=>`<button data-d="${i}" ${mine?'disabled':''} class="${mine&&d.picks[uid]==i?'on':''}" style="grid-area:${POS[i].replace('/','/')};grid-row:${POS[i].split('/')[0]};grid-column:${POS[i].split('/')[1]}">${l}</button>`).join('')}</div>
- <p class="msg status">${mine?'Aguardando o outro jogador...':''}</p><div class="sm">${d.log.map(l=>(l.sh==uid?'Você':esc(on))+' '+(l.g?'⚽':'❌')).join(' · ')}</div></div>`}
-$('#xDuel').onclick=async e=>{const b=e.target.closest('[data-d]');if(!b)return;const dir=+b.dataset.d,d=duels.find(x=>x.status=='play');if(!d)return;
- try{await runTransaction(db,async t=>{const dr=doc(db,'duels',d.id),x=await t.get(dr),g=x.data();if(g.status!='play'||(g.picks||{})[uid]!==undefined)return;
-  const pk={...g.picks,[uid]:dir};if(pk[g.a]===undefined||pk[g.b]===undefined)return t.update(dr,{picks:pk});
-  const sh=g.k%2?g.b:g.a,kp=sh==g.a?g.b:g.a,goal=pk[sh]!==pk[kp],s={aS:g.aS+(goal&&sh==g.a?1:0),bS:g.bS+(goal&&sh==g.b?1:0),k:g.k+1,picks:{},log:[...g.log,{sh,g:goal}]};
-  const ka=Math.ceil(s.k/2),kb=Math.floor(s.k/2);let over=false;
-  if(s.k<10)over=s.aS>s.bS+(5-kb)||s.bS>s.aS+(5-ka);else over=s.k%2==0&&s.aS!=s.bS;
-  if(over){const w=s.aS>s.bS?g.a:g.b,lb=w==g.a?g.bBet:g.aBet,df=Math.abs(s.aS-s.bS),pay=g.aBet+g.bBet+Math.floor(lb*(df>=3?1.5:1.25));Object.assign(s,{status:'done',winner:w,payTo:w,payout:pay,claimed:false})}
-  t.update(dr,s)})}catch(er){toast(fail(er,'chute'))}};
-$('#xInv').onclick=async e=>{const ac=e.target.dataset.ac,no=e.target.dataset.no;
- if(ac)try{const a=Math.floor(+$('#ib_'+ac).value);if(!(a>=1))return toast('Aposta inválida.');
-  await runTransaction(db,async t=>{const dr=doc(db,'duels',ac),x=await t.get(dr),u=await t.get(uref);if(x.data().status!='invite')throw Error('Desafio não existe mais.');if(u.data().coins<a)throw Error('Saldo insuficiente.');
-   t.update(uref,{coins:u.data().coins-a});t.update(dr,{bBet:a,status:'play'})})}catch(er){toast(er.message||fail(er,'aceitar'))}
- if(no)try{await runTransaction(db,async t=>{const dr=doc(db,'duels',no),x=await t.get(dr);if(x.data().status!='invite')return;t.update(dr,{status:'closed',closedBy:uid,payTo:x.data().a,payout:x.data().aBet,claimed:false})})}catch(er){toast(fail(er,'recusar'))}};
 
-/* ---- abas ---- */
-const TABS=[['race','Corrida'],['x1','⚔️ X1'],['slot','Slots'],['dice','Dados'],['pix','Pix'],['shop','Amigos'],['rank','Ranking'],['adm','Admin']];
-$('#nav').innerHTML=TABS.map(([k,n],i)=>`<button data-t="${k}" aria-selected="${i==0}">${n}</button>`).join('');
-function showTab(t){document.querySelectorAll('#nav button').forEach(x=>x.setAttribute('aria-selected',x.dataset.t===t));TABS.forEach(([k])=>$('#'+k).classList.toggle('hide',k!==t))}
-document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.t));
-</script></body></html>
+onAuthStateChanged(auth, async u => {
+  if (!u) {
+    $('#app').classList.add('hide'); $('#auth').classList.remove('hide'); uid = null; return;
+  }
+  uid = u.uid; uref = doc(db, 'users', uid);
+  $('#auth').classList.add('hide'); $('#app').classList.remove('hide');
+  
+  if(uid === ADMIN_UID) $('#adminPanel').classList.remove('hide');
+
+
+  onSnapshot(uref, s => {
+    if(!s.exists()) setDoc(uref, { nick: u.displayName, coins: 1000 });
+    else {
+      data = s.data();
+      $('#who').textContent = data.nick;
+      $('#coins').textContent = data.coins;
+      renderShop();
+    }
+  });
+
+
+  // Listener global para bloqueio (Aula)
+  onSnapshot(doc(db, 'config', 'state'), s => {
+    if(s.exists() && s.data().blocked) $('#blockScreen').classList.remove('hide');
+    else $('#blockScreen').classList.add('hide');
+  });
+});
+
+
+$('#toggleBlock').onclick = () => {
+  const st = doc(db, 'config', 'state');
+  getDoc(st).then(d => {
+    setDoc(st, { blocked: !(d.exists() && d.data().blocked) });
+  });
+};
+
+
+// Notificações na tela (Alerts)
+function showAlert(msg) {
+  const div = document.createElement('div');
+  div.className = 'alert-box';
+  div.innerHTML = <strong>ALERTA MUDANÇA NO MERCADO:</strong><br>${msg};
+  $('#alerts').appendChild(div);
+  setTimeout(() => div.remove(), 6000);
+}
+
+
+// Lógica Visual das Corridas (Reviravoltas e Nomes na Frente)
+const ATIVOS = ['Bitcoin', 'Petrobras', 'Tesla', 'Apple', 'Ouro', 'Dólar'];
+$('#track').innerHTML = ATIVOS.map((c, i) => `
+  <div class="lane">
+    <div class="run" id="r${i}" style="left: 0%;">
+      <span class="nm">${c}</span>
+      <span class="h-icon" style="filter: hue-rotate(${i*40}deg)">🏇</span>
+    </div>
+  </div>`).join('');
+
+
+// Simulação simples de corrida com reviravoltas
+setInterval(() => {
+  if(!uid) return;
+  const t = (Date.now() % 60000) / 60000; // Corrida a cada 60s
+  
+  if (t > 0.95 && t < 0.96) {
+    showAlert("20s para o fechamento do mercado! Faça suas apostas!");
+  }
+
+
+  if (t < 0.2) {
+    $('#st').textContent = "MERCADO ABERTO - PREPARANDO...";
+    ATIVOS.forEach((_, i) => $(#r${i}).style.left = '0%');
+  } else {
+    $('#st').textContent = "GRÁFICOS SUBINDO! CORRIDA EM ANDAMENTO!";
+    ATIVOS.forEach((_, i) => {
+      // Cálculo de reviravolta: mistura de seno com ruído aleatório constante
+      const noise = Math.sin(Date.now() / (500 + i * 100)) * 5;
+      const progress = Math.min(100, ((t - 0.2) / 0.8) * 100 + noise);
+      $(#r${i}).style.left = calc(${Math.max(0, progress)}% - 40px);
+    });
+  }
+}, 500);
+
+
+// Loja de Amigos
+function renderShop() {
+  $('#col').innerHTML = AMIGOS.map(a => `
+    <div style="border: 2px solid var(--l); padding: 10px; text-align: center; width: 140px;">
+      <img src="${GITHUB_URL}${a.img}" alt="${a.nome}" style="width:100%; height:100px; object-fit:cover; image-rendering: pixelated; border: 2px solid #000; margin-bottom: 5px;" onerror="this.src='https://via.placeholder.com/100?text=AMIGO'">
+      <div style="font-size: 0.8rem">${a.nome}</div>
+      <div class="sm" style="color: var(--good)">+${a.rendimento}/min</div>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>
